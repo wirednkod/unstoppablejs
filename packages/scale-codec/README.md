@@ -1,28 +1,20 @@
-# scale-codec
+# scale-ts
 
 A modular, composable, strongly typed and lightweight implementation of the [SCALE Codec](https://docs.substrate.io/v3/advanced/scale-codec/)
 
 ## Installation
 
-    npm install --save @unstoppablejs/scale-codec
+    npm install --save scale-ts
 
 ## Usage Example
 
 ```ts
-import {
-  boolean,
-  string,
-  u32,
-  Enum,
-  Struct,
-  Vector,
-} from "@unstoppablejs/scale-codec"
-import { toHex } from "@unstoppablejs/utils"
+import { boolean, string, u32, Enum, Struct, Vector } from "scale-ts"
 
 enum Events {
-  One,
-  Many,
-  AllOrNothing,
+  One = "One",
+  Many = "Many",
+  AllOrNothing = "AllOrNothing",
 }
 
 const myCodec = Struct({
@@ -91,7 +83,7 @@ console.log(JSON.stringify(decodedData, null, 2))
 In this library you won't find common definitions like `AccountId`. However,
 since the definitions of this library are enhanceable and composable, it's
 very easy to create new custom definitions. For instance, the implementation of
-the `Str` Codec looks like this:
+the `str` Codec looks like this:
 
 ```ts
 import { utf16StrToUtf8Bytes, utf8BytesToUtf16Str } from "@unstoppablejs/utils"
@@ -99,7 +91,7 @@ import { enhanceCodec } from "../"
 import { u8 } from "./u8"
 import { Vector } from "./Vector"
 
-export const Str = enhanceCodec(
+export const str = enhanceCodec(
   Vector(U8, true),
   utf16StrToUtf8Bytes,
   utf8BytesToUtf16Str,
@@ -111,7 +103,7 @@ definitions. For instance, a possible implementation of an `AccountId`
 definition could be:
 
 ```ts
-import { enhanceCodec, Bytes } from "@unstoppablejs/scale-codec"
+import { enhanceCodec, Bytes } from "scale-ts"
 import { decodeAddress, encodeAddress } from "@polkadot/util-crypto"
 
 export const AccountId = enhanceCodec(Bytes(32), decodeAddress, encodeAddress)
